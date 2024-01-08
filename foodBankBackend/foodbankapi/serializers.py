@@ -7,6 +7,10 @@ class ItemSerializer(serializers.ModelSerializer):
         fields=["name", "category"]
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    item = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field="name"
+    )
     class Meta:
         model=OrderItem
         fields=["item", "amountRemaining", "unit"]
