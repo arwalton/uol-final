@@ -7,7 +7,7 @@ from .models import *
 
 @api_view(['GET'])
 def hello_world(request):
-    return Response({'message': 'Hello, world!'})
+    return Response({'message': 'Look it works'})
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()

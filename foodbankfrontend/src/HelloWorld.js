@@ -5,7 +5,7 @@ function HelloWorld() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8000/hello-world/')
+    axios.get('http://localhost:8000/api/hello-world/')
       .then(response => {
         setMessage(response.data.message);
       })
@@ -16,7 +16,7 @@ function HelloWorld() {
 
   return (
     <div>
-      <h1>Hello, World!</h1>
+      <h1>Hello, UOLCS!</h1>
       <p>{message}</p>
     </div>
   );
