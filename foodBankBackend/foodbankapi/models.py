@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 
 class Address(models.Model):
@@ -141,3 +142,6 @@ class Organization(models.Model):
         choices=TypeChoices,
         default=TypeChoices.DISTRIBUTOR
     )
+
+class User(AbstractUser):
+    pass
