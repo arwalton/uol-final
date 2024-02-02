@@ -4,6 +4,7 @@ from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 
+##################################################
 class Address(models.Model):
     street = models.CharField(
         _("street"),
@@ -28,7 +29,7 @@ class Address(models.Model):
         max_length=16
     )
 
-
+##################################################
 class Item(models.Model):
     name = models.CharField(
         _("name"),
@@ -63,6 +64,7 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
+##################################################
 class Order(models.Model):
     creationDate = models.DateTimeField(
         db_comment="Date and time the order was created",
@@ -85,6 +87,7 @@ class Order(models.Model):
         default=StatusChoices.OPEN
     )
 
+##################################################
 class OrderItem(models.Model):
     order = models.ForeignKey(
         Order,
@@ -120,7 +123,10 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.item) + "(s): " + str(self.amountRemaining) + " " + self.UNIT_CHOICES[self.unit]
     
+##################################################
 class Organization(models.Model):
+    connections = models.ManyToManyField("Organization", blank=True)
+
     name = models.CharField(
         max_length=255
     )
@@ -143,5 +149,20 @@ class Organization(models.Model):
         default=TypeChoices.DISTRIBUTOR
     )
 
+##################################################
 class User(AbstractUser):
     pass
+
+##################################################
+class ConnectionRequest(models.Model):
+    fromOrganization = models.ForeignKey(
+        Organization,
+        related_name="fromOrganization",
+        on_delete=models.CASCADE
+    )
+
+    toOrganization = models.ForeignKey(
+        Organization,
+        related_name="toOrganization",
+        on_delete=models.CASCADE
+    )
