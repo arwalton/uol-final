@@ -29,6 +29,12 @@ class Address(models.Model):
         max_length=16
     )
 
+    def __str__(self):
+        if(self.state != ""):
+            return self.street + " " + self.city + ", " + self.state + ", " + self.country.name + ", " + self.postalCode
+        
+        return self.street + " " + self.city + ", " + self.country.name + ", " + self.postalCode
+
 ##################################################
 class Item(models.Model):
     name = models.CharField(
@@ -121,7 +127,7 @@ class OrderItem(models.Model):
     )
 
     def __str__(self):
-        return str(self.item) + "(s): " + str(self.amountRemaining) + " " + self.UNIT_CHOICES[self.unit]
+        return str(self.item) + "(s): " + str(self.amountRemaining) + " " + self.get_unit_display()
     
 ##################################################
 class Organization(models.Model):
@@ -151,7 +157,11 @@ class Organization(models.Model):
 
 ##################################################
 class User(AbstractUser):
-    pass
+    organization = models.ForeignKey(
+        Organization,
+        related_name="userOrganization",
+        on_delete=models.CASCADE
+    )
 
 ##################################################
 class ConnectionRequest(models.Model):
