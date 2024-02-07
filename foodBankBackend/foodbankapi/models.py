@@ -160,7 +160,9 @@ class User(AbstractUser):
     organization = models.ForeignKey(
         Organization,
         related_name="userOrganization",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
 
 ##################################################
