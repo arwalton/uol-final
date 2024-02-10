@@ -45,12 +45,17 @@ const Signup = () => {
                 toast.error(JSON.stringify(error));
             }
         })
+        return false
     }
 
     return (
         <div>
             <h1>Sign up</h1>
-            <form onSubmit={signupNewUser}>
+            <form onSubmit={(event) => {
+                // Prevents form from default submission behavior
+                event.preventDefault();
+                signupNewUser()}
+            }>
                 <div>
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" name="username" value={username} onChange={(e)=>setUsername(e.target.value)} />
