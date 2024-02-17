@@ -15,17 +15,17 @@ axios.defaults.baseURL = "http://127.0.0.1:8000"
 const App = () => {
 
   return(
-    <AuthenticationContextProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthenticationContextProvider>
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route exact path="/" element={<Home />} />
         </Routes>
-      </BrowserRouter>
-      <ToastContainer hideProgressBar newestOnTop />
-    </AuthenticationContextProvider>
+        <ToastContainer hideProgressBar newestOnTop />
+      </AuthenticationContextProvider>
+    </BrowserRouter>
   )
 }
 

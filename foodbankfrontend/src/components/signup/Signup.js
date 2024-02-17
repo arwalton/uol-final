@@ -1,5 +1,5 @@
 import axios from "axios"
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
 import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import AuthenticationContext from "../../contextProviders/authentication/AuthenticationContext.jsx"
@@ -54,8 +54,8 @@ const Signup = () => {
             <form onSubmit={(event) => {
                 // Prevents form from default submission behavior
                 event.preventDefault();
-                signupNewUser()}
-            }>
+                signupNewUser()
+            }}>
                 <div>
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" name="username" value={username} onChange={(e)=>setUsername(e.target.value)} />
