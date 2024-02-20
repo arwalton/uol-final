@@ -1,28 +1,26 @@
 import axios from "axios"
 import { useState, useContext } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { setAxiosAuthToken, toastOnError } from "../../utils/Utils"
 import AuthenticationContext from "../../contextProviders/authentication/AuthenticationContext.jsx";
-import { toast } from "react-toastify"
 
 const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
     const { 
-        currentUser,
-        token,
-        isAuthenticated,
         handleSetToken,
         handleSetCurrentUser
     } = useContext(AuthenticationContext)
     const navigate = useNavigate()
+    const location = useLocation()
 
-    const login = (redirectTo) => {
+    const login = () => {
         const userData = {
             "password": password,
             "username": username
         }
+        console.log("locationState", location.state)
         console.log("Log in " + userData.username + " " + userData.password)
 
         axios.post("/api/auth/v1/token/login/", userData)
@@ -30,7 +28,7 @@ const Login = () => {
             const { auth_token } = response.data
             setAxiosAuthToken(auth_token)
             handleSetToken(auth_token)
-            getCurrentUser(redirectTo)
+            getCurrentUser()
         })
         .catch(error => {
             handleSetCurrentUser(undefined)
@@ -38,27 +36,16 @@ const Login = () => {
         })
     }
 
-    const getCurrentUser = (redirectTo) => {
+    const getCurrentUser = () => {
         axios.get("/api/auth/v1/users/me/")
         .then(response => {
             const user = {
                 username: response.data.username,
                 email: response.data.email
             }
-        handleSetCurrentUser(user, redirectTo)
-        })
-    }
-
-    const logout = () => {
-        axios.post("/api/auth/v1/token/logout/")
-        .then(response => {
-            handleSetCurrentUser(undefined)
-            toast.success("Logout successful.")
-            navigate("/")
-        })
-        .catch(error => {
-            handleSetCurrentUser(undefined)
-            toastOnError(error)
+            const redirectTo = location.state && location.state.redirectTo ? location.state.redirectTo : ""
+            console.log("redirectTo", redirectTo)
+            handleSetCurrentUser(user, redirectTo)
         })
     }
 

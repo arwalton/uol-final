@@ -1,13 +1,16 @@
 import { createContext, useEffect, useState } from 'react'
 import { CREATE_USER_STATUS } from '../../enums/createUserStatus'
-import { setAxiosAuthToken } from '../../utils/Utils'
+import { setAxiosAuthToken, isEmpty } from '../../utils/Utils'
 import { useNavigate } from 'react-router-dom'
 
 const AuthenticationContext = createContext({
     createUserStatus: CREATE_USER_STATUS.NONE,
     usernameError: '',
     passwordError: '',
-    isSubmitted: false
+    isSubmitted: false,
+    currentUser: {},
+    isAuthenticated: false,
+    token: ''
 })
 
 export const AuthenticationContextProvider = ({children}) => {
@@ -41,6 +44,18 @@ export const AuthenticationContextProvider = ({children}) => {
         }
     }, [createUserStatus])
 
+    useEffect(() => {
+        console.log("checking localStorage")
+        // check localStorage
+        if (!isEmpty(localStorage.getItem("token"))) {
+            handleSetToken(localStorage.getItem("token"))
+          }
+          if (!isEmpty(localStorage.getItem("user"))) {
+            const user = JSON.parse(localStorage.getItem("user"));
+            handleSetCurrentUser(user, "")
+          }
+    }, [])
+
     const handleCreateUserSubmitted = () => {
         setCreateUserStatus(CREATE_USER_STATUS.CREATE_USER_SUBMITTED)
     }
@@ -67,20 +82,25 @@ export const AuthenticationContextProvider = ({children}) => {
     const handleSetCurrentUser = (user, redirectTo) => {
         if(user){
             setCurrentUser(user)
-            console.log("set user", + redirectTo)
+            localStorage.setItem("user", JSON.stringify(user))
+            console.log("set user")
 
             if(redirectTo){
                 console.log("redirectTo: ", redirectTo)
                 navigate(redirectTo)
+                return
             }
             navigate("/")
         }
-
+        console.log("setAxiosAuthToken")
         setAxiosAuthToken("");
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
     }
 
     const handleSetToken = (token) => {
         setToken(token)
+        localStorage.setItem("token", token)
         setIsAuthenticated(true)
         setAxiosAuthToken(token);
     }
