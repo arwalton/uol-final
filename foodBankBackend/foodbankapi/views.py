@@ -11,13 +11,12 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
-@api_view(['GET'])
-def hello_world(request):
-    return Response({'message': 'Look it works'})
-
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(organization=self.request.user.organization)
 
 #### Authenticaiton ####
 def get_csrf(request):

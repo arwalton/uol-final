@@ -22,7 +22,11 @@ class Address(models.Model):
         blank=True
     )
 
-    country = CountryField()
+    country = models.CharField(
+        max_length=200,
+        null=True,
+        choices=list(CountryField().choices) + [('', 'Select Country')]
+    )
 
     postalCode = models.CharField(
         _("postal code"),
@@ -31,9 +35,9 @@ class Address(models.Model):
 
     def __str__(self):
         if(self.state != ""):
-            return self.street + " " + self.city + ", " + self.state + ", " + self.country.name + ", " + self.postalCode
+            return self.street + " " + self.city + ", " + self.state + ", " + self.country + ", " + self.postalCode
         
-        return self.street + " " + self.city + ", " + self.country.name + ", " + self.postalCode
+        return self.street + " " + self.city + ", " + self.country + ", " + self.postalCode
 
 ##################################################
 class Item(models.Model):
@@ -73,12 +77,10 @@ class Item(models.Model):
 ##################################################
 class Order(models.Model):
     creationDate = models.DateTimeField(
-        db_comment="Date and time the order was created",
         auto_now_add=True
     )
 
     expirationDate = models.DateTimeField(
-        db_comment="Date when the order is no longer valid"
     )
 
     class StatusChoices(models.TextChoices):
@@ -92,6 +94,21 @@ class Order(models.Model):
         choices=StatusChoices,
         default=StatusChoices.OPEN
     )
+
+    fromOrganization = models.ForeignKey(
+        "Organization",
+        related_name="orderFromOrganization",
+        on_delete=models.CASCADE
+    )
+
+    toOrganization = models.ForeignKey(
+        "Organization",
+        related_name="orderToOrganization",
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return str(self.fromOrganization) + ' > ' + str(self.toOrganization)
 
 ##################################################
 class OrderItem(models.Model):
@@ -154,6 +171,9 @@ class Organization(models.Model):
         choices=TypeChoices,
         default=TypeChoices.DISTRIBUTOR
     )
+
+    def __str__(self):
+        return self.name
 
 ##################################################
 class User(AbstractUser):

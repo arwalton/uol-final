@@ -20,19 +20,20 @@ class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model=OrderItem
         fields=["item", "amountRemaining", "unit"]
-        
-class OrderSerializer(serializers.ModelSerializer):
-    orderItems = OrderItemSerializer(many=True)
-
-    class Meta:
-        model=Order
-        fields=["creationDate", "expirationDate", "status", "orderItems"]
 
 class OrganizationSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
     class Meta:
         model=Organization
         fields=["name", "address", "phoneNumber", "type"]
+
+class OrderSerializer(serializers.ModelSerializer):
+    orderItems = OrderItemSerializer(many=True)
+    organization = OrganizationSerializer()
+
+    class Meta:
+        model=Order
+        fields=["creationDate", "expirationDate", "status", "orderItems", "organization"]
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

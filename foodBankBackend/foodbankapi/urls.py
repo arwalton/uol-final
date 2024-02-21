@@ -3,10 +3,9 @@ from . import views
 from rest_framework import routers 
 
 router = routers.DefaultRouter()
-router.register(r'orders', views.OrderViewSet)
+router.register(r'orders', views.OrderViewSet, basename="orders")
 
 urlpatterns = [
-    path('hello-world/', views.hello_world, name='hello_world'),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('csrf/', views.get_csrf, name='api-csrf'),
