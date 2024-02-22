@@ -7,6 +7,7 @@ import Dashboard from "./components/dashboard/Dashboard"
 import Header from "./components/header/Header"
 import RequireAuthentication from "./utils/RequireAuthentication.js";
 import { AuthenticationContextProvider } from "./contextProviders/authentication/AuthenticationContext.jsx"
+import { OrderContextProvider } from "./contextProviders/orders/OrderContext.js"
 import axios from 'axios'
 
 axios.defaults.baseURL = "http://127.0.0.1:8000"
@@ -20,7 +21,13 @@ const App = () => {
           <Routes>
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<RequireAuthentication><Dashboard /></RequireAuthentication>} />
+            <Route path="/dashboard" element={
+              <RequireAuthentication>
+                <OrderContextProvider>
+                  <Dashboard />
+                </OrderContextProvider>
+              </RequireAuthentication>
+            } />
             <Route exact path="/" element={<Home />} />
           </Routes>
         </Header>
