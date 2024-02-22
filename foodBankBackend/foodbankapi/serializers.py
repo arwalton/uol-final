@@ -29,11 +29,12 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     orderItems = OrderItemSerializer(many=True)
-    organization = OrganizationSerializer()
+    fromOrganization = OrganizationSerializer()
+    toOrganization = OrganizationSerializer()
 
     class Meta:
         model=Order
-        fields=["creationDate", "expirationDate", "status", "orderItems", "organization"]
+        fields=["creationDate", "expirationDate", "status", "orderItems", "fromOrganization", "toOrganization"]
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

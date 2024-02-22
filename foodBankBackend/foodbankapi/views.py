@@ -16,7 +16,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(organization=self.request.user.organization)
+        return (self.queryset.filter(fromOrganization=self.request.user.organization) |
+        self.queryset.filter(toOrganization=self.request.user.organization)
+        )
+    
     
 
 
