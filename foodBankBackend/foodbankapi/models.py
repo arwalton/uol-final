@@ -50,7 +50,7 @@ class Item(models.Model):
         BEVERAGES = "BE", _("Beverages")
         BAKING = "BA", _("Baking")
         BREADS = "BR", _("Breads")
-        CHEESES = "CH", _("Cheeses")
+        DAIRY = "DA", _("DAIRY")
         DESSERTS = "DE", _("Desserts")
         DRYGOODS = "DR", _("Dry goods")
         EGGS = "EG", _("Eggs")

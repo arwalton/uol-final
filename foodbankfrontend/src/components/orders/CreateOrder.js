@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import { addOrder } from "./OrderActions";
 import { Link } from "react-router-dom";
 import { ORDER_STATUS } from "../../enums/orderStatus";
+import { categoryChoices } from "../../constants/categories";
+import { foodsByCategory } from "../../constants/foodsByCategory";
+import { unitChoices } from "../../constants/unitChoices";
 
 const CreateOrder = () => {
     const [error, setError] = useState("")
     const [duration, setDuration] = useState(2)
     const [orderItemFields, setOrderItemFields] = useState([{
-        item: 'stuff',
-        amountRemaining: 'some',
-        unit: 'your mom'
+        item: '',
+        amountRemaining: '',
+        unit: ''
     }])
+    const [categoryFields, setCategoryFields] = useState([])
     
     const calculateExpirationDate = () => {
         const date = new Date()
@@ -19,10 +23,16 @@ const CreateOrder = () => {
         return date.toISOString()
     }
 
-    const handleFormChange = (index, event) => {
+    const handleItemChange = (index, event) => {
         let data = [...orderItemFields]
         data[index][event.target.name] = event.target.value
         setOrderItemFields(data)
+    }
+
+    const handleCategoryChange = (index, event) => {
+        let data = [...categoryFields]
+        data[index] = event.target.value
+        setCategoryFields(data)
     }
 
     const removeOrderItemField = (indexToRemove) => {
@@ -31,28 +41,71 @@ const CreateOrder = () => {
         })
         setOrderItemFields(data)
     }
+    const mapCategoryChoices = categoryChoices.map((category, index) => {
+        return (<option value={category}>{category}</option>)
+    })
+    
+    const mapUnitChoices = unitChoices.map((unit, index) => {
+        return (<option value={unit}>{unit}</option>)
+    })
+
+    const mapItemChoicesByCategory = (categoryIndex) => {
+        const itemChoicesMap = foodsByCategory[categoryFields[categoryIndex]] ? (
+            foodsByCategory[categoryFields[categoryIndex]].map((food, index) => {
+                return (<option value={food}>{food}</option>)
+            })
+        ) : (
+            <></>
+        )
+        return itemChoicesMap
+    }
 
     const orderItemInputFields = orderItemFields.map((orderItem, index) => {
         return(
             <div key={index}>
-                <input 
-                    name="item"
-                    placeholder="item"
-                    value={orderItem.item}
-                    onChange={(e)=>handleFormChange(index, e)}
-                />
-                <input 
-                    name="amountRemaining"
-                    placeholder="amountRemaining"
-                    value={orderItem.amountRemaining}
-                    onChange={(e)=>handleFormChange(index, e)}
-                />
-                <input 
-                    name="unit"
-                    placeholder="unit"
-                    value={orderItem.unit}
-                    onChange={(e)=>handleFormChange(index, e)}
-                />
+                <label for='category'>Choose a category</label>
+                <select 
+                    name="category"
+                    id="category"
+                    onChange={(e) => handleCategoryChange(index, e)}
+                >
+                    {mapCategoryChoices}
+                </select>
+                {categoryFields[index] &&
+                    <div>
+                        <label for='item'>Choose an item</label>
+                        <select
+                            name="item"
+                            id="item"
+                            onChange={(e) => handleItemChange(index, e)}
+                        >
+                            {mapItemChoicesByCategory(index)}
+                        </select>
+                    </div>
+                }
+                {(categoryFields[index] && orderItemFields[index].item) &&
+                    <>
+                        <div>
+                            <label for='amountRemaining'>Choose an amount</label>
+                            <input 
+                                name="amountRemaining"
+                                placeholder="amountRemaining"
+                                value={orderItem.amountRemaining}
+                                onChange={(e)=>handleItemChange(index, e)}
+                            />
+                        </div>
+                        <div>
+                            <label for="unit">Units</label>
+                            <select
+                                name="unit"
+                                id="unit"
+                                onChange={(e) => handleItemChange(index, e)}
+                            >
+                                {mapUnitChoices}
+                            </select>
+                        </div>
+                    </>
+                }
                 <button type="button" onClick={() => removeOrderItemField(index)}>Remove item</button>
             </div>
         )
@@ -75,6 +128,7 @@ const CreateOrder = () => {
         }
 
         console.log("createNewOrder", orderData)
+        console.log("categories", categoryFields)
     }
 
     return(
@@ -111,7 +165,7 @@ const CreateOrder = () => {
                         }
                     </div> */}
                 </div>
-                <button type="submit">Sign up</button>
+                <button type="submit">Submit your order</button>
             </form>
         </div>
     )

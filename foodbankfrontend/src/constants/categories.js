@@ -1,0 +1,15 @@
+export const categoryChoices = [
+    "",
+    "Beverages",
+    "Baking",
+    "Breads",
+    "Dairy",
+    "Dry goods",
+    "Fats",
+    "Frozen foods",
+    "Fruits",
+    "Proteins",
+    "Seafood",
+    "Spices",
+    "Vegetables",
+]
