@@ -50,7 +50,7 @@ class Item(models.Model):
         BEVERAGES = "BE", _("Beverages")
         BAKING = "BA", _("Baking")
         BREADS = "BR", _("Breads")
-        DAIRY = "DA", _("DAIRY")
+        DAIRY = "DA", _("Dairy")
         DESSERTS = "DE", _("Desserts")
         DRYGOODS = "DR", _("Dry goods")
         EGGS = "EG", _("Eggs")
@@ -151,7 +151,8 @@ class Organization(models.Model):
     connections = models.ManyToManyField("Organization", blank=True)
 
     name = models.CharField(
-        max_length=255
+        max_length=255,
+        unique=True
     )
 
     address = models.OneToOneField(

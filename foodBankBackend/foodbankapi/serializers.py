@@ -13,10 +13,7 @@ class ItemSerializer(serializers.ModelSerializer):
         fields=["name", "category"]
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    item = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field="name"
-    )
+    item = ItemSerializer()
     class Meta:
         model=OrderItem
         fields=["item", "amountRemaining", "unit"]
@@ -41,6 +38,42 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field="name"
     )
+
+    def create(self, validated_data):
+        orderItems = validated_data.pop('orderItems')
+
+        user = self.context['request'].user
+        fromOrg = user.organization
+
+        #########################################################
+        # FIX TO ORG TOMORROW YOU MORON!!!!!!!!!!!!!!           #
+        #########################################################
+        toOrg = Organization.objects.get(name="Test Grocery Store")
+
+        order = Order.objects.create(
+            **validated_data,
+            fromOrganization=fromOrg,
+            toOrganization=toOrg            
+        )
+        order.save()
+
+        for orderItem in orderItems:
+            print("orderItem")
+            print(orderItem)
+            print(orderItem["item"])
+            item = Item.objects.get(name=orderItem["item"]["name"])
+            orderItemToAdd = OrderItem.objects.create(
+                order=order,
+                item=item,
+                amountRemaining=orderItem["amountRemaining"],
+                unit=orderItem["unit"]
+            )
+            orderItemToAdd.save()
+
+
+
+        return order
+
 
     class Meta:
         model=Order
