@@ -1,10 +1,11 @@
 
-export const unitChoices = [
-    "Gallons",
-    "Grams",
-    "Kilograms",
-    "Liters",
-    "Packages",
-    "Pieces",
-    "Pounds"
-]
+export const unitChoices = {
+    "": "",
+    "Gallons": "GA",
+    "Grams": "GR",
+    "Kilograms": "KG",
+    "Liters": "LI",
+    "Packages": "PK",
+    "Pieces": "PC",
+    "Pounds": "LB",
+}

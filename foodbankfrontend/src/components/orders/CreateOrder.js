@@ -11,7 +11,7 @@ const CreateOrder = () => {
     const [duration, setDuration] = useState(2)
     const [orderItemFields, setOrderItemFields] = useState([{
         item: '',
-        amountRemaining: '',
+        amountRemaining: 0,
         unit: ''
     }])
     const [categoryFields, setCategoryFields] = useState([])
@@ -45,8 +45,8 @@ const CreateOrder = () => {
         return (<option value={category}>{category}</option>)
     })
     
-    const mapUnitChoices = unitChoices.map((unit, index) => {
-        return (<option value={unit}>{unit}</option>)
+    const mapUnitChoices = Object.keys(unitChoices).map((unit, index) => {
+        return (<option value={unitChoices[unit]}>{unit}</option>)
     })
 
     const mapItemChoicesByCategory = (categoryIndex) => {
@@ -89,7 +89,7 @@ const CreateOrder = () => {
                             <label for='amountRemaining'>Choose an amount</label>
                             <input 
                                 name="amountRemaining"
-                                placeholder="amountRemaining"
+                                type="number"
                                 value={orderItem.amountRemaining}
                                 onChange={(e)=>handleItemChange(index, e)}
                             />
@@ -133,7 +133,7 @@ const CreateOrder = () => {
 
     return(
         <div>
-            <h1>Sign up</h1>
+            <h1>Create new Order</h1>
             <form onSubmit={(event) => {
                 // Prevents form from default submission behavior
                 event.preventDefault();

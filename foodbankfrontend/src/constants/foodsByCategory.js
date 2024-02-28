@@ -1,6 +1,7 @@
 export const foodsByCategory = {
     "": [],
     "Beverages": [
+        "",
         "Apple juice",
         "Coffee",
         "Cranberry juice",
@@ -8,6 +9,7 @@ export const foodsByCategory = {
         "Tea",
     ],
     "Baking": [
+        "",
         "Active dry yeast",
         "All-purpose flour",
         "Baking powder",
@@ -24,6 +26,7 @@ export const foodsByCategory = {
         "Whole-wheat flour",
     ],
     "Breads and Grains": [
+        "",
         "Bagels",
         "Brown rice",
         "Crackers",
@@ -37,6 +40,7 @@ export const foodsByCategory = {
         "White rice",
     ],
     "Dairy": [
+        "",
         "Butter",
         "Cheese",
         "Cream Cheese",
@@ -48,6 +52,7 @@ export const foodsByCategory = {
         "Whole Milk",
     ],
     "Dry goods": [
+        "",
         "Canned beans",
         "Canned beef",
         "Canned chicken",
@@ -63,6 +68,7 @@ export const foodsByCategory = {
         "Tomato paste",
     ],
     "Fats": [
+        "",
         "Canola oil",
         "Mayonnaise",
         "Olive oil",
@@ -70,6 +76,7 @@ export const foodsByCategory = {
         "Vegetable oil",
     ],
     "Frozen foods": [
+        "",
         "Corn",
         "Green beans",
         "Mixed berries",
@@ -81,6 +88,7 @@ export const foodsByCategory = {
         "Strawberries",
     ],
     "Fruits": [
+        "",
         "Apple",
         "Banana",
         "Blueberry",
@@ -89,6 +97,7 @@ export const foodsByCategory = {
         "Watermelon"
     ],
     "Proteins": [
+        "",
         "Beef roast",
         "Chicken breast",
         "Chicken cutlets",
@@ -98,10 +107,12 @@ export const foodsByCategory = {
         "Whole chicken",
     ],
     "Seafood": [
+        "",
         "Salmon filets",
         "Smoked salmon",
     ],
     "Spices": [
+        "",
         "Allspice",
         "Basil",
         "Black Pepper",
@@ -112,6 +123,7 @@ export const foodsByCategory = {
         "Red pepper flakes",
     ],
     "Vegetables": [
+        "",
         "Bell pepper",
         "Broccoli",
         "Cauliflower",

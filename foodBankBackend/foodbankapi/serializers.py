@@ -29,8 +29,18 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     orderItems = OrderItemSerializer(many=True)
-    fromOrganization = OrganizationSerializer()
-    toOrganization = OrganizationSerializer()
+    # fromOrganization = OrganizationSerializer()
+    fromOrganization = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field="name"
+    )
+    # toOrganization = OrganizationSerializer()
+    toOrganization = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field="name"
+    )
 
     class Meta:
         model=Order
