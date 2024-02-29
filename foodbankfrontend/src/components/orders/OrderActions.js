@@ -14,3 +14,7 @@ export const addOrder = (order) => {
         toastOnError(error)
     })
 }
+
+export const getSuppliers = () => {
+    return axios.get("/api/suppliers")
+} 

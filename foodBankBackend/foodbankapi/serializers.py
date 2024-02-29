@@ -39,16 +39,16 @@ class OrderSerializer(serializers.ModelSerializer):
         slug_field="name"
     )
 
+    def validate_toOrganization(self, value):
+        return value
+
     def create(self, validated_data):
         orderItems = validated_data.pop('orderItems')
-
+        orgName = self.context['toOrganization']
         user = self.context['request'].user
         fromOrg = user.organization
 
-        #########################################################
-        # FIX TO ORG TOMORROW YOU MORON!!!!!!!!!!!!!!           #
-        #########################################################
-        toOrg = Organization.objects.get(name="Test Grocery Store")
+        toOrg = Organization.objects.get(name=orgName)
 
         order = Order.objects.create(
             **validated_data,
@@ -80,9 +80,14 @@ class OrderSerializer(serializers.ModelSerializer):
         fields=["creationDate", "expirationDate", "status", "orderItems", "fromOrganization", "toOrganization"]
 
 class UserSerializer(serializers.ModelSerializer):
+    organization = OrganizationSerializer()
     class Meta:
         model=User
-        fields=["username", "first_name", "last_name", "email", ]
+        fields=["username", "first_name", "last_name", "email", "organization"]
+
+    def create(self, validated_data):
+        print("validated_data")
+        print(validated_data)
 
 class ConnectionRequestSerializer(serializers.ModelSerializer):
     fromOrganization = OrganizationSerializer()

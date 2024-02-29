@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { addOrder } from "./OrderActions";
+import { addOrder, getSuppliers } from "./OrderActions";
 import { Link } from "react-router-dom";
 import { ORDER_STATUS } from "../../enums/orderStatus";
 import { categoryChoices } from "../../constants/categories";
 import { foodsByCategory } from "../../constants/foodsByCategory";
 import { unitChoices } from "../../constants/unitChoices";
+import { toastOnError } from "../../utils/Utils"
 
 const CreateOrder = () => {
     const [error, setError] = useState("")
@@ -15,6 +16,26 @@ const CreateOrder = () => {
         unit: ''
     }])
     const [categoryFields, setCategoryFields] = useState([])
+    const [suppliers, setSuppliers] = useState([])
+    const [toOrganization, setToOrganization] = useState({})
+
+    useEffect(() => {
+        let ignore = false
+        getSuppliers()
+        .then(response => {
+            if(!ignore){
+                console.log('response', response)
+                setSuppliers(response.data)
+            }
+        })
+        .catch(error => {
+            toastOnError(error)
+        })
+
+        return () => {
+            ignore = true
+        }
+    }, [])
     
     const calculateExpirationDate = () => {
         const date = new Date()
@@ -33,6 +54,17 @@ const CreateOrder = () => {
         let data = [...categoryFields]
         data[index] = event.target.value
         setCategoryFields(data)
+    }
+
+    const handleToOrganizationChange = (event) => {
+        const orgName = event.target.value
+        const org = suppliers.reduce((accumulator, current) => {
+            if(current.name === orgName){
+                return {...accumulator, ...current}
+            }
+            return {...accumulator}
+        }, {})
+        setToOrganization(org)
     }
 
     const removeOrderItemField = (indexToRemove) => {
@@ -111,6 +143,12 @@ const CreateOrder = () => {
         )
     })
 
+    const supplierInputFields = suppliers.map((supplier, index) => {
+        return (
+            <option value={supplier.name}>{supplier.name}</option>
+        )
+    })
+
     const addOrderItemInputField = () => {
         const newField = {
             item: '',
@@ -124,7 +162,8 @@ const CreateOrder = () => {
         const orderData = {
             "expirationDate": calculateExpirationDate(),
             "status": ORDER_STATUS.OPEN,
-            "orderItems": [...orderItemFields]
+            "orderItems": [...orderItemFields],
+            "toOrganization": toOrganization
         }
 
         console.log("createNewOrder", orderData)
@@ -155,15 +194,15 @@ const CreateOrder = () => {
                 {orderItemInputFields}
                 <button type="button" onClick={addOrderItemInputField}>Add another item</button>
                 <div>
-                    {/* <label htmlFor="username">Password</label>
-                    <input type="password" id="password" name="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
-                    <div>
-                        {error &&
-                        <small>
-                            {error}
-                        </small>
-                        }
-                    </div> */}
+                    <label for="toOrganization">Choose where to send your order</label>
+                    <select
+                        name="toOrganization"
+                        id="toOrganization"
+                        onChange={(e) => handleToOrganizationChange(e)}
+                    >
+                        <option value=''></option>
+                        {supplierInputFields}
+                    </select>
                 </div>
                 <button type="submit">Submit your order</button>
             </form>

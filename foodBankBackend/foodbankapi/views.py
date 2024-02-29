@@ -19,6 +19,12 @@ class OrderViewSet(viewsets.ModelViewSet):
         return (self.queryset.filter(fromOrganization=self.request.user.organization) |
         self.queryset.filter(toOrganization=self.request.user.organization)
         )
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        if "toOrganization" in self.request.data:
+            context.update({"toOrganization": self.request.data["toOrganization"]})
+        return context
 
 class SupplierViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.filter(type="SU")
