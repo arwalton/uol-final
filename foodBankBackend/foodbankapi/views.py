@@ -19,11 +19,21 @@ class OrderViewSet(viewsets.ModelViewSet):
         return (self.queryset.filter(fromOrganization=self.request.user.organization) |
         self.queryset.filter(toOrganization=self.request.user.organization)
         )
-    
-    
+
+class SupplierViewSet(viewsets.ModelViewSet):
+    queryset = Organization.objects.filter(type="SU")
+    serializer_class = OrganizationSerializer
+
+class DistributorViewSet(viewsets.ModelViewSet):
+    queryset = Organization.objects.filter(type="DI")
+    serializer_class = OrganizationSerializer
+
+class OrganizationViewSet(viewsets.ModelViewSet):
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
 
 
-#### Authenticaiton ####
+#### Authentication ####
 def get_csrf(request):
     response = JsonResponse({'detail': 'CSRF cookie set'})
     response['X-CSRFToken'] = get_token(request)

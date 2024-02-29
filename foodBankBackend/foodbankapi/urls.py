@@ -4,6 +4,9 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'orders', views.OrderViewSet, basename="orders")
+router.register(r'suppliers', views.SupplierViewSet, basename="suppliers")
+router.register(r'distributors', views.DistributorViewSet, basename="distributors")
+router.register(r'organizations', views.OrganizationViewSet, basename="organizations")
 
 urlpatterns = [
     path('', include(router.urls)),
