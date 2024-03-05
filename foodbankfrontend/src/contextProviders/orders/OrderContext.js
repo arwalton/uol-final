@@ -15,7 +15,7 @@ export const OrderContextProvider = ({children}) => {
 
     const handleAddMultipleOrders = (orderArrayToAdd) => {
         console.log("handleAddMultipleOrders called")
-        const newOrdersAray = filterUnique([...orders, orderArrayToAdd], item => item.creationDate )
+        const newOrdersAray = filterUnique([...orders, ...orderArrayToAdd], item => item.creationDate )
         setOrders(newOrdersAray)
     }
 

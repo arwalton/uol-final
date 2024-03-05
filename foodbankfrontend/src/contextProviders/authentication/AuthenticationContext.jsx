@@ -49,11 +49,11 @@ export const AuthenticationContextProvider = ({children}) => {
         // check localStorage
         if (!isEmpty(localStorage.getItem("token"))) {
             handleSetToken(localStorage.getItem("token"))
-          }
-          if (!isEmpty(localStorage.getItem("user"))) {
-            const user = JSON.parse(localStorage.getItem("user"));
-            handleSetCurrentUser(user, "")
-          }
+        }
+        if (!isEmpty(localStorage.getItem("user"))) {
+        const user = JSON.parse(localStorage.getItem("user"));
+        handleSetCurrentUser(user, "")
+        }
     }, [])
 
     const handleCreateUserSubmitted = () => {

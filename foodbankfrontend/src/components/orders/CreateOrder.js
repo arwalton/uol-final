@@ -6,18 +6,22 @@ import { categoryChoices } from "../../constants/categories";
 import { foodsByCategory } from "../../constants/foodsByCategory";
 import { unitChoices } from "../../constants/unitChoices";
 import { toastOnError } from "../../utils/Utils"
+import { useNavigate } from 'react-router-dom'
 
 const CreateOrder = () => {
+    const navigate = useNavigate()
     const [error, setError] = useState("")
     const [duration, setDuration] = useState(2)
     const [orderItemFields, setOrderItemFields] = useState([{
-        item: '',
+        item: {
+            name: '',
+            category: ''
+        },
         amountRemaining: 0,
         unit: ''
     }])
-    const [categoryFields, setCategoryFields] = useState([])
     const [suppliers, setSuppliers] = useState([])
-    const [toOrganization, setToOrganization] = useState({})
+    const [toOrganization, setToOrganization] = useState()
 
     useEffect(() => {
         let ignore = false
@@ -46,25 +50,30 @@ const CreateOrder = () => {
 
     const handleItemChange = (index, event) => {
         let data = [...orderItemFields]
-        data[index][event.target.name] = event.target.value
+        switch (event.target.name) {
+            case "category":
+                console.log("category changed")
+                data[index].item = {...data[index].item, "category": event.target.value}
+                console.log("data[index].item after category select", data[index].item)
+                break
+            case "item":
+                console.log("item changed")
+                console.log("data[index].item before item select", data[index].item)
+                data[index].item = {...data[index].item, "name": event.target.value}
+                console.log("data[index].item after item select", data[index].item)
+                break
+            case "amountRemaining":
+                console.log("amountRemaining changed")
+                data[index].amountRemaining = event.target.value
+                break
+            case "unit":
+                console.log("unit changed")
+                data[index].unit = event.target.value
+                break
+            default:
+                console.log("something messed up")
+        }
         setOrderItemFields(data)
-    }
-
-    const handleCategoryChange = (index, event) => {
-        let data = [...categoryFields]
-        data[index] = event.target.value
-        setCategoryFields(data)
-    }
-
-    const handleToOrganizationChange = (event) => {
-        const orgName = event.target.value
-        const org = suppliers.reduce((accumulator, current) => {
-            if(current.name === orgName){
-                return {...accumulator, ...current}
-            }
-            return {...accumulator}
-        }, {})
-        setToOrganization(org)
     }
 
     const removeOrderItemField = (indexToRemove) => {
@@ -73,8 +82,8 @@ const CreateOrder = () => {
         })
         setOrderItemFields(data)
     }
-    const mapCategoryChoices = categoryChoices.map((category, index) => {
-        return (<option value={category}>{category}</option>)
+    const mapCategoryChoices = Object.keys(categoryChoices).map((categoryChoice, index) => {
+        return (<option value={categoryChoice}>{categoryChoice}</option>)
     })
     
     const mapUnitChoices = Object.keys(unitChoices).map((unit, index) => {
@@ -82,8 +91,9 @@ const CreateOrder = () => {
     })
 
     const mapItemChoicesByCategory = (categoryIndex) => {
-        const itemChoicesMap = foodsByCategory[categoryFields[categoryIndex]] ? (
-            foodsByCategory[categoryFields[categoryIndex]].map((food, index) => {
+        console.log("category", orderItemFields[categoryIndex].item.category)
+        const itemChoicesMap = foodsByCategory[orderItemFields[categoryIndex].item.category] ? (
+            foodsByCategory[orderItemFields[categoryIndex].item.category].map((food, index) => {
                 return (<option value={food}>{food}</option>)
             })
         ) : (
@@ -99,11 +109,11 @@ const CreateOrder = () => {
                 <select 
                     name="category"
                     id="category"
-                    onChange={(e) => handleCategoryChange(index, e)}
+                    onChange={(e) => handleItemChange(index, e)}
                 >
                     {mapCategoryChoices}
                 </select>
-                {categoryFields[index] &&
+                {orderItemFields[index].item.category &&
                     <div>
                         <label for='item'>Choose an item</label>
                         <select
@@ -115,7 +125,7 @@ const CreateOrder = () => {
                         </select>
                     </div>
                 }
-                {(categoryFields[index] && orderItemFields[index].item) &&
+                {orderItemFields[index].item.category &&
                     <>
                         <div>
                             <label for='amountRemaining'>Choose an amount</label>
@@ -151,23 +161,40 @@ const CreateOrder = () => {
 
     const addOrderItemInputField = () => {
         const newField = {
-            item: '',
+            item: {
+                name: '',
+                category: ''
+            },
             amountRemaining: '',
             unit: ''
         }
         setOrderItemFields([...orderItemFields, newField])
     }
 
+    const mapOrderItemCategories = () => {
+        const data = [...orderItemFields]
+            data.map((orderItem, index) => {
+            return orderItem.item.category = categoryChoices[orderItem.item.category]
+        })
+        return data
+    }
+
     const createNewOrder = () => {
         const orderData = {
             "expirationDate": calculateExpirationDate(),
             "status": ORDER_STATUS.OPEN,
-            "orderItems": [...orderItemFields],
+            "orderItems": [...mapOrderItemCategories()],
             "toOrganization": toOrganization
         }
 
-        console.log("createNewOrder", orderData)
-        console.log("categories", categoryFields)
+        addOrder(orderData)
+        .then(response => {
+            console.log(response.data)
+            navigate("/order-created")
+        })
+        .catch(error => {
+            toastOnError(error)
+        })
     }
 
     return(
@@ -198,7 +225,7 @@ const CreateOrder = () => {
                     <select
                         name="toOrganization"
                         id="toOrganization"
-                        onChange={(e) => handleToOrganizationChange(e)}
+                        onChange={(e) => setToOrganization(e.target.value)}
                     >
                         <option value=''></option>
                         {supplierInputFields}

@@ -16,7 +16,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     item = ItemSerializer()
     class Meta:
         model=OrderItem
-        fields=["item", "amountRemaining", "unit"]
+        fields=["id", "item", "amountRemaining", "unit"]
 
 class OrganizationSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -70,14 +70,17 @@ class OrderSerializer(serializers.ModelSerializer):
             )
             orderItemToAdd.save()
 
-
-
         return order
+    
+    def update(self, instance, validated_data):
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
 
 
     class Meta:
         model=Order
-        fields=["creationDate", "expirationDate", "status", "orderItems", "fromOrganization", "toOrganization"]
+        fields=["id", "creationDate", "expirationDate", "status", "orderItems", "fromOrganization", "toOrganization"]
 
 class UserSerializer(serializers.ModelSerializer):
     organization = OrganizationSerializer()

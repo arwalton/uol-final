@@ -6,15 +6,13 @@ export const getOrders = () => {
 }
 
 export const addOrder = (order) => {
-    axios.post("/api/orders/", order)
-    .then(response => {
-        return response.data
-    })
-    .catch(error => {
-        toastOnError(error)
-    })
+    return axios.post("/api/orders/", order)
 }
 
 export const getSuppliers = () => {
     return axios.get("/api/suppliers")
-} 
+}
+
+export const updateOrder = (id, order) => {
+    return axios.patch(`/api/orders/${id}/`, order)
+}

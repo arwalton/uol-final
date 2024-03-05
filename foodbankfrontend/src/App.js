@@ -9,6 +9,7 @@ import RequireAuthentication from "./utils/RequireAuthentication.js";
 import { AuthenticationContextProvider } from "./contextProviders/authentication/AuthenticationContext.jsx"
 import { OrderContextProvider } from "./contextProviders/orders/OrderContext.js"
 import axios from 'axios'
+import OrderCreated from "./components/orders/OrderCreated.js";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000"
 
@@ -25,6 +26,13 @@ const App = () => {
               <RequireAuthentication>
                 <OrderContextProvider>
                   <Dashboard />
+                </OrderContextProvider>
+              </RequireAuthentication>
+            } />
+            <Route path="/order-created" element={
+              <RequireAuthentication>
+                <OrderContextProvider>
+                  <OrderCreated />
                 </OrderContextProvider>
               </RequireAuthentication>
             } />
