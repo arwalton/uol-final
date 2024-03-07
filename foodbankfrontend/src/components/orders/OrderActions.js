@@ -16,3 +16,7 @@ export const getSuppliers = () => {
 export const updateOrder = (id, order) => {
     return axios.patch(`/api/orders/${id}/`, order)
 }
+
+export const updateOrderItem = (id, orderItem) => {
+    return axios.patch(`/api/orderItems/${id}/`, orderItem)
+}
