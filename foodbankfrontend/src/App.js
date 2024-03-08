@@ -10,6 +10,7 @@ import { AuthenticationContextProvider } from "./contextProviders/authentication
 import { OrderContextProvider } from "./contextProviders/orders/OrderContext.js"
 import axios from 'axios'
 import OrderCreated from "./components/orders/OrderCreated.js";
+import CreateOrder from "./components/orders/CreateOrder.js";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000"
 
@@ -18,27 +19,32 @@ const App = () => {
   return(
     <BrowserRouter>
       <AuthenticationContextProvider>
-        <Header>
-          <Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={
-              <RequireAuthentication>
-                <OrderContextProvider>
-                  <Dashboard />
-                </OrderContextProvider>
-              </RequireAuthentication>
-            } />
-            <Route path="/order-created" element={
-              <RequireAuthentication>
-                <OrderContextProvider>
-                  <OrderCreated />
-                </OrderContextProvider>
-              </RequireAuthentication>
-            } />
-            <Route exact path="/" element={<Home />} />
-          </Routes>
-        </Header>
+        <Routes>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={
+            <RequireAuthentication>
+              <OrderContextProvider>
+                <Dashboard />
+              </OrderContextProvider>
+            </RequireAuthentication>
+          } />
+          <Route path="/order-created" element={
+            <RequireAuthentication>
+              <OrderContextProvider>
+                <OrderCreated />
+              </OrderContextProvider>
+            </RequireAuthentication>
+          } />
+          <Route path="/create-order" element={
+            <RequireAuthentication>
+              <OrderContextProvider>
+                <CreateOrder />
+              </OrderContextProvider>
+            </RequireAuthentication>
+          } />
+          <Route exact path="/" element={<Home />} />
+        </Routes>
         <ToastContainer hideProgressBar newestOnTop />
       </AuthenticationContextProvider>
     </BrowserRouter>

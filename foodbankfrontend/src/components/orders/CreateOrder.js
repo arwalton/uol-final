@@ -7,6 +7,7 @@ import { foodsByCategory } from "../../constants/foodsByCategory";
 import { unitChoices } from "../../constants/unitChoices";
 import { toastOnError } from "../../utils/Utils"
 import { useNavigate } from 'react-router-dom'
+import Header from "../header/Header";
 
 const CreateOrder = () => {
     const navigate = useNavigate()
@@ -104,51 +105,64 @@ const CreateOrder = () => {
 
     const orderItemInputFields = orderItemFields.map((orderItem, index) => {
         return(
-            <div key={index}>
-                <label for='category'>Choose a category</label>
-                <select 
-                    name="category"
-                    id="category"
-                    onChange={(e) => handleItemChange(index, e)}
-                >
-                    {mapCategoryChoices}
-                </select>
-                {orderItemFields[index].item.category &&
-                    <div>
-                        <label for='item'>Choose an item</label>
-                        <select
-                            name="item"
-                            id="item"
+            <div class="box" key={index}>
+                <div class="field">
+                    <label class="label" for='category'>Choose a category</label>
+                    <div class="select">
+                        <select 
+                            name="category"
+                            id="category"
                             onChange={(e) => handleItemChange(index, e)}
                         >
-                            {mapItemChoicesByCategory(index)}
+                            {mapCategoryChoices}
                         </select>
+                    </div>
+                </div>
+                {orderItemFields[index].item.category &&
+                    <div class="field">
+                        <label class="label" for='item'>Choose an item</label>
+                        <div class="select">
+                            <select
+                                name="item"
+                                id="item"
+                                onChange={(e) => handleItemChange(index, e)}
+                            >
+                                {mapItemChoicesByCategory(index)}
+                            </select>
+                        </div>
+                        
                     </div>
                 }
                 {orderItemFields[index].item.category &&
                     <>
-                        <div>
-                            <label for='amountRemaining'>Choose an amount</label>
-                            <input 
-                                name="amountRemaining"
-                                type="number"
-                                value={orderItem.amountRemaining}
-                                onChange={(e)=>handleItemChange(index, e)}
-                            />
+                        <div class="field">
+                            <label class="label" for='amountRemaining'>Choose an amount</label>
+                            <div class="columns ml-1 mt-2 mb-3">
+                                <input 
+                                    class="input column is-one-fifth"
+                                    name="amountRemaining"
+                                    type="number"
+                                    min={0}
+                                    value={orderItem.amountRemaining}
+                                    onChange={(e)=>handleItemChange(index, e)}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label for="unit">Units</label>
-                            <select
-                                name="unit"
-                                id="unit"
-                                onChange={(e) => handleItemChange(index, e)}
-                            >
-                                {mapUnitChoices}
-                            </select>
+                        <div class="field">
+                            <label class="label" for="unit">Units</label>
+                            <div class="select">
+                                <select
+                                    name="unit"
+                                    id="unit"
+                                    onChange={(e) => handleItemChange(index, e)}
+                                >
+                                    {mapUnitChoices}
+                                </select>
+                            </div>
                         </div>
                     </>
                 }
-                <button type="button" onClick={() => removeOrderItemField(index)}>Remove item</button>
+                <button class="button" type="button" onClick={() => removeOrderItemField(index)}>Remove item</button>
             </div>
         )
     })
@@ -199,40 +213,45 @@ const CreateOrder = () => {
 
     return(
         <div>
-            <h1>Create new Order</h1>
-            <form onSubmit={(event) => {
-                // Prevents form from default submission behavior
-                event.preventDefault();
-                createNewOrder()
-            }}>
-                <div>
-                    <label htmlFor="orderDuration">Set order duration: {duration} week(s)</label>
-                    <input 
-                        type="range"
-                        id="orderDuration" 
-                        name="orderDuration" 
-                        value={duration} 
-                        onChange={(e)=>setDuration(e.target.value)} 
-                        min={1}
-                        max={6}
-                        step={1}
-                    />
-                </div>
-                {orderItemInputFields}
-                <button type="button" onClick={addOrderItemInputField}>Add another item</button>
-                <div>
-                    <label for="toOrganization">Choose where to send your order</label>
-                    <select
-                        name="toOrganization"
-                        id="toOrganization"
-                        onChange={(e) => setToOrganization(e.target.value)}
-                    >
-                        <option value=''></option>
-                        {supplierInputFields}
-                    </select>
-                </div>
-                <button type="submit">Submit your order</button>
-            </form>
+            <Header />
+            <div class="box">
+                <h1 class="is-size-1">Create new Order</h1>
+                <form onSubmit={(event) => {
+                    // Prevents form from default submission behavior
+                    event.preventDefault();
+                    createNewOrder()
+                }}>
+                    <div class="field">
+                        <label class="label" htmlFor="orderDuration">Set order duration: {duration} week(s)</label>
+                        <input 
+                            type="range"
+                            id="orderDuration" 
+                            name="orderDuration" 
+                            value={duration} 
+                            onChange={(e)=>setDuration(e.target.value)} 
+                            min={1}
+                            max={6}
+                            step={1}
+                        />
+                    </div>
+                    {orderItemInputFields}
+                    <button class="button is-primary" type="button" onClick={addOrderItemInputField}>Add another item</button>
+                    <div class="field">
+                        <label class="label" for="toOrganization">Choose where to send your order</label>
+                        <div class="select">
+                            <select
+                                name="toOrganization"
+                                id="toOrganization"
+                                onChange={(e) => setToOrganization(e.target.value)}
+                            >
+                                <option value=''></option>
+                                {supplierInputFields}
+                            </select>
+                        </div>
+                    </div>
+                    <button class="button is-link" type="submit">Submit your order</button>
+                </form>
+            </div>
         </div>
     )
 }

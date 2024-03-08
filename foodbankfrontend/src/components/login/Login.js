@@ -3,6 +3,7 @@ import { useState, useContext } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { setAxiosAuthToken, toastOnError } from "../../utils/Utils"
 import AuthenticationContext from "../../contextProviders/authentication/AuthenticationContext.jsx";
+import Header from "../header/Header.js";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -51,30 +52,33 @@ const Login = () => {
 
     return (
         <div>
-            <h1>Login</h1>
-            <form onSubmit={(event) => {
-                // Prevents form from default submission behavior
-                event.preventDefault();
-                login()
-            }}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" id="username" name="username" value={username} onChange={(e)=>setUsername(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="username">Password</label>
-                    <input type="password" id="password" name="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
-                <div>
-                    {error &&
-                    <small>
-                        {error}
-                    </small>
-                    }
-                </div>
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            <p>Don't have an account? <Link to="/signup/">Sign up</Link></p>
+            <Header />
+            <div class="box">
+                <h1 class="is-size-1">Login</h1>
+                <form onSubmit={(event) => {
+                    // Prevents form from default submission behavior
+                    event.preventDefault();
+                    login()
+                }}>
+                    <div class="field">
+                        <label class="label" htmlFor="username">Username</label>
+                        <input class="input" type="text" id="username" name="username" value={username} onChange={(e)=>setUsername(e.target.value)} />
+                    </div>
+                    <div class="field">
+                        <label class="label" htmlFor="username">Password</label>
+                        <input class="input" type="password" id="password" name="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
+                    <div>
+                        {error &&
+                        <small>
+                            {error}
+                        </small>
+                        }
+                    </div>
+                    </div>
+                    <button class="button is-link" type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <Link to="/signup/">Sign up</Link></p>
+            </div>
         </div>
     )
 }

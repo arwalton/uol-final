@@ -1,14 +1,16 @@
 import OrderList from "../orders/OrderList"
-import CreateOrder from "../orders/CreateOrder"
+import Header from "../header/Header"
 
 
 const Dashboard = () => {
 
     return (
         <div>
-            <h1>Dashboard</h1>
-            <OrderList />
-            <CreateOrder />
+            <Header />
+            <div class="box">
+                <h1 class="is-size-1">Dashboard</h1>
+                <OrderList />
+            </div>
         </div>
     )
 }

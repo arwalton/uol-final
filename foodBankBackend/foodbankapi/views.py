@@ -24,6 +24,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         if "toOrganization" in self.request.data:
             context.update({"toOrganization": self.request.data["toOrganization"]})
+        if "orderItems" in self.request.data:
+            context.update({"orderItems": self.request.data["orderItems"]})
         return context
 
 class SupplierViewSet(viewsets.ModelViewSet):

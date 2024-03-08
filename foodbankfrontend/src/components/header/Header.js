@@ -29,18 +29,36 @@ const Header = ({ children }) => {
 
     return (
         <div>
-            {isAuthenticated ? (
-                <>
-                    <p>Hello {currentUser.username}!</p>
-                    <Link to="/">Home</Link>
-                    <br />
-                    <button onClick={logout}>logout</button>
-                </>
-            ):(
-                <p>User Not logged in</p>
-            )}
-            <hr/>
-            { children }
+            <nav role="navigation" class="navbar is-fixed-top is-primary" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <Link to="/" class="navbar-item">Home</Link>
+                        <Link to="/dashboard" class="navbar-item">Dashboard</Link>
+                        <Link to="/create-order" class="navbar-item">New order</Link>
+                    </div>
+
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            {isAuthenticated ? (
+                                <button class="button is-light" onClick={logout}>Log out</button>
+                            ) : (
+                            <div class="buttons">
+                                <Link to="/signup" class="button is-primary">Sign up</Link>
+                                <Link to="/login" class="button is-light">Log in</Link>
+                            </div>
+                            )}
+                            
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="box">
+                { children }
+            </div>
+
         </div>
     )
 }

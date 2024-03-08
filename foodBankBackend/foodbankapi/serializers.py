@@ -43,12 +43,13 @@ class OrderSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        orderItems = validated_data.pop('orderItems')
+        removedItems = validated_data.pop('orderItems')
+        orderItems = self.context['orderItems']
         orgName = self.context['toOrganization']
         user = self.context['request'].user
         fromOrg = user.organization
-
         toOrg = Organization.objects.get(name=orgName)
+        print(validated_data)
 
         order = Order.objects.create(
             **validated_data,
@@ -60,7 +61,6 @@ class OrderSerializer(serializers.ModelSerializer):
         for orderItem in orderItems:
             print("orderItem")
             print(orderItem)
-            print(orderItem["item"])
             item = Item.objects.get(name=orderItem["item"]["name"])
             orderItemToAdd = OrderItem.objects.create(
                 order=order,
