@@ -13,6 +13,10 @@ export const getSuppliers = () => {
     return axios.get("/api/suppliers")
 }
 
+export const getDistributors = () => {
+    return axios.get("/api/distributors")
+}
+
 export const updateOrder = (id, order) => {
     return axios.patch(`/api/orders/${id}/`, order)
 }

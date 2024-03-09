@@ -3,6 +3,7 @@ import { ORDER_STATUS } from "../../enums/orderStatus"
 import { updateOrder } from "./OrderActions"
 import { toastOnError } from "../../utils/Utils"
 import OrderItem from "./OrderItem"
+import * as dayjs from 'dayjs'
 
 const Order = ({order}) => {
     const [displayStatus, setDisplayStatus] = useState(order.status)
@@ -85,18 +86,19 @@ const Order = ({order}) => {
     }
 
     return (
-        <div>
-            <p>Creation Date: { order.creationDate }</p>
-            <p>Expiration Date: { order.expirationDate }</p>
+        <div class="box">
+            <p>Creation Date: { dayjs(order.creationDate).format("YYYY-MM-DD") }</p>
+            <p>Expiration Date: { dayjs(order.expirationDate).format("YYYY-MM-DD") }</p>
             <div>
                 <p>Status: { formatdisplayStatus() }</p>
                 <button
+                    class="button"
                     type="button"
                     onClick={updateStatus}
                     disabled={isUpdating}
                 >Update Status</button>
             </div>
-            <p>Order Items:</p>
+            <p class="is-size-3">Order Items:</p>
             <ul>
                 { orderItems }
             </ul>

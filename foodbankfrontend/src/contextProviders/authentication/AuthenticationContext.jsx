@@ -91,6 +91,7 @@ export const AuthenticationContextProvider = ({children}) => {
                 return
             }
             navigate("/")
+            return
         }
         console.log("setAxiosAuthToken")
         setAxiosAuthToken("");

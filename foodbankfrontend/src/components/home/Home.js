@@ -11,11 +11,10 @@ const Home = () => {
         <div>
             <Header />
             <div class="box">
-                <h1 class="is-size-1">Home</h1>
-                <Link to="/login/">Log in</Link>
-                <br />
-                <Link to="/signup/">Sign up</Link>
-                <br />
+                <h1 class="is-size-1">Welcome to the food pantry ordering system</h1>
+                <p>Before you get started, makes sure to <Link to="/login/">log in</Link> or <Link to="/signup/">sign up</Link>.</p>
+                <p>After that, vist the <Link to="/dashboard/">dashboard</Link> to see your current orders.</p>
+                <p>Or you can make a new order <Link to="create-order">here</Link>.</p>
             </div>
         </div>
     )

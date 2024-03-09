@@ -42,7 +42,7 @@ const OrderList = () => {
 
     return (
         <div>
-            <h2>Order List</h2>
+            <h2 class="is-size-2">Order List</h2>
             <ul>
                 {orderMap}
             </ul>

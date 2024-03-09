@@ -22,15 +22,15 @@ const OrderItem = ({orderItem}) => {
 
     return (
         <div>
-            <p>{orderItem.item.name + ': '}</p>
+            <p class="is-size-5">{orderItem.item.name + ': '}</p>
             <p>{amountRemainingToDisplay.toFixed(2) + ' ' + orderItem.unit} </p>
             <form onSubmit={(event) => {
                 // Prevents form from default submission behavior
                 event.preventDefault();
                 handleUpdateAmountRemaining()
             }}>
-                <div>
-                    <label for="amountToSubtract">How much to subtract?</label>
+                <div class="field">
+                    <label class="label" for="amountToSubtract">How much to subtract?</label>
                     <input 
                         type="number"
                         id="amountToSubtract" 
@@ -41,7 +41,7 @@ const OrderItem = ({orderItem}) => {
                         onChange={(e)=>setAmountToSubtract(e.target.value)} 
                     />
                 </div>
-                <button type="submit">Update amount remaining</button>
+                <button class="button" type="submit">Update amount remaining</button>
             </form>
         </div>
     )

@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
 
 # Configure Djoser
 DJOSER = {
-    "USER_ID_FIELD": "username"
+    "USER_ID_FIELD": "username",
 }
 
 # CORS Settings
